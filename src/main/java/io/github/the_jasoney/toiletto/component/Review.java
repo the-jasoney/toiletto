@@ -10,12 +10,12 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_id")
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "toilet_id")
+    @ManyToOne(targetEntity = Toilet.class)
+    @JoinColumn(name="toilet_id", nullable = false)
     private Toilet toilet;
 
     @Column(nullable = false)
@@ -141,7 +141,6 @@ public class Review {
         this.hasBabyChangingStation = hasBabyChangingStation;
     }
 
-
     public User getAuthor() {
         return author;
     }
@@ -150,4 +149,11 @@ public class Review {
         this.author = author;
     }
 
+    public Toilet getToilet() {
+        return toilet;
+    }
+
+    public void setToilet(Toilet toilet) {
+        this.toilet = toilet;
+    }
 }

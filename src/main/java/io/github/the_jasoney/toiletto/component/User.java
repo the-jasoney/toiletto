@@ -2,10 +2,10 @@ package io.github.the_jasoney.toiletto.component;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.List;
 
-@Entity
+// 'user' is a reserved keyword in postgreSQL
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,12 +20,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany( targetEntity = Review.class, mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Review.class, mappedBy = "author")
     private List<Review> reviews;
 
-    @OneToMany( targetEntity = Token.class, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Token> tokens;
-
+    @OneToMany(targetEntity = Token.class, mappedBy = "toilettouser")
+    private List<Token> token;
 
     public User() {
     }
@@ -70,11 +69,11 @@ public class User {
         this.reviews = reviews;
     }
 
-    public List<Token> getTokens() {
-        return tokens;
+    public List<Token> getToken() {
+        return token;
     }
 
-    public void setTokens(List<Token> tokens) {
-        this.tokens = tokens;
+    public void setToken(List<Token> token) {
+        this.token = token;
     }
 }

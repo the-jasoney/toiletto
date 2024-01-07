@@ -1,28 +1,29 @@
 package io.github.the_jasoney.toiletto.component;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import jakarta.persistence.*;
 
-import javax.annotation.processing.Generated;
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "toilets")
 public class Toilet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @OneToMany(targetEntity = Review.class)
+    @OneToMany(targetEntity = Review.class, mappedBy = "toilet")
     private List<Review> reviews;
 
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    private Float latitude;
-
-    @Column(nullable = false)
-    private Float longitude;
+    @Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
+    private Point location;
 
     @Column
     private Float accessibilityScore;
@@ -36,19 +37,23 @@ public class Toilet {
     public Toilet() {
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public Toilet(String address) {
+        this.address = address;
+        this.reviews = new ArrayList<Review>();
+        this.location = (new GeometryFactory(new PrecisionModel(), 4326)).createPoint(new Coordinate(0, 0)); // TODO use geocoding API to fetch coordinates from address
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public Toilet(Point location) {
+        this.address = "";
+        this.reviews = new ArrayList<Review>();
+        this.location = location;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,20 +65,12 @@ public class Toilet {
         this.address = address;
     }
 
-    public Float getLatitude() {
-        return latitude;
+    public Point getLocation() {
+        return location;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
+    public void setLocation(Point location) {
+        this.location = location;
     }
 
     public Float getAccessibilityScore() {
@@ -98,5 +95,13 @@ public class Toilet {
 
     public void setPrivacyScore(Float privacyScore) {
         this.privacyScore = privacyScore;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }
