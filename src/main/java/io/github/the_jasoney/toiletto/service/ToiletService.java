@@ -8,9 +8,11 @@ import io.github.the_jasoney.toiletto.component.Review;
 import io.github.the_jasoney.toiletto.component.Toilet;
 import io.github.the_jasoney.toiletto.repository.ToiletRepository;
 import io.github.the_jasoney.toiletto.util.UnauthenticatedException;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -21,9 +23,6 @@ public class ToiletService {
 
     @Autowired
     private ToiletRepository toiletRepository;
-
-    @Autowired
-    private TokenService tokenService;
 
     private final GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 
@@ -51,18 +50,13 @@ public class ToiletService {
         return toilet.get().getReviews();
     }
 
-    public String createToiletFromAddress(String token, String address) throws UnauthenticatedException {
-        // make more secure later
-        if (tokenService.authenticateToken(token)) {
-            Toilet toilet = toiletRepository.save(new Toilet(address));
-            return toilet.getId();
-        } else throw new UnauthenticatedException("invalid token");
+    public String createToiletFromAddress(String token, String address) throws UnauthenticatedException, ExecutionControl.NotImplementedException {
+        // TODO
+        throw new ExecutionControl.NotImplementedException("TODO");
     }
 
-    public String createToiletFromCoords(String token, Float latitude, Float longitude) throws UnauthenticatedException {
-        if (!tokenService.authenticateToken(token)) throw new UnauthenticatedException("Invalid token");
-        Point p = factory.createPoint(new Coordinate(latitude, longitude));
-        Toilet toilet = toiletRepository.save(new Toilet(p));
-        return toilet.getId();
+    public String createToiletFromCoords(String token, Float latitude, Float longitude) throws UnauthenticatedException, ExecutionControl.NotImplementedException {
+        // TODO
+        throw new ExecutionControl.NotImplementedException("TODO");
     }
 }

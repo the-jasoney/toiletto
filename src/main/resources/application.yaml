@@ -1,6 +1,11 @@
 server:
   port: 8080
 
+toiletto:
+  app:
+    jwtSecret: apwoefij823rf89ps3p2fipaw98w39j83329823f982jf0239f8j230f982j3f09283fj02398fj2039f8j2309f8j2039f8j20398fj203f982j30f9283jf02938fj
+    jwtExpirationMs: 86400000
+
 spring:
   # Database configuration
   datasource:
@@ -25,6 +30,9 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  sql:
+    init:
+      mode: always
 logging:
   level:
     org.hibernate.type.descriptor.sql: trace

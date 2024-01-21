@@ -5,6 +5,7 @@ import io.github.the_jasoney.toiletto.component.Review;
 import io.github.the_jasoney.toiletto.component.Toilet;
 import io.github.the_jasoney.toiletto.service.ToiletService;
 import io.github.the_jasoney.toiletto.util.UnauthenticatedException;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -66,6 +67,8 @@ public class ToiletController {
             return ResponseEntity.ok().body(toiletService.createToiletFromAddress(token, address));
         } catch (UnauthenticatedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (ExecutionControl.NotImplementedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,6 +90,8 @@ public class ToiletController {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED, "Invalid token"
             );
+        } catch (ExecutionControl.NotImplementedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

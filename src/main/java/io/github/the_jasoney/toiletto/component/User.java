@@ -1,18 +1,23 @@
 package io.github.the_jasoney.toiletto.component;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // 'user' is a reserved keyword in postgreSQL
 @Entity(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -23,26 +28,41 @@ public class User {
     @OneToMany(targetEntity = Review.class, mappedBy = "author")
     private List<Review> reviews;
 
-    @OneToMany(targetEntity = Token.class, mappedBy = "toilettouser")
-    private List<Token> token;
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
+    private Set<Role> roles = new HashSet<>();
 
-    public User() {
+    public User(String name, String password, String email) {
+        this.username = name;
+        this.password = password;
+        this.email = email;
     }
 
-    public Integer getId() {
+    public User() {
+
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getPassword() {
@@ -67,13 +87,5 @@ public class User {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-    }
-
-    public List<Token> getToken() {
-        return token;
-    }
-
-    public void setToken(List<Token> token) {
-        this.token = token;
     }
 }
