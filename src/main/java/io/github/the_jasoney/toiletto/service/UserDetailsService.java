@@ -1,11 +1,11 @@
 package io.github.the_jasoney.toiletto.service;
 
-import io.github.the_jasoney.toiletto.component.User;
+import io.github.the_jasoney.toiletto.entity.Toilet;
+import io.github.the_jasoney.toiletto.entity.User;
 import io.github.the_jasoney.toiletto.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

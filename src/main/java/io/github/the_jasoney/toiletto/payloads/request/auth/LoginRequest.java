@@ -1,13 +1,13 @@
-package io.github.the_jasoney.toiletto.payloads.request;
+package io.github.the_jasoney.toiletto.payloads.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
     @NotBlank
-    String username;
+    private String username;
 
     @NotBlank
-    String password;
+    private String password;
 
     public LoginRequest(String username, String password) {
         this.username = username;
@@ -18,12 +18,12 @@ public class LoginRequest {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {

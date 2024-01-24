@@ -1,7 +1,7 @@
 package io.github.the_jasoney.toiletto.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.the_jasoney.toiletto.component.User;
+import io.github.the_jasoney.toiletto.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

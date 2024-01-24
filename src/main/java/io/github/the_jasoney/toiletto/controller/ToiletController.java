@@ -1,15 +1,20 @@
 package io.github.the_jasoney.toiletto.controller;
 
 
-import io.github.the_jasoney.toiletto.component.Review;
-import io.github.the_jasoney.toiletto.component.Toilet;
+import io.github.the_jasoney.toiletto.entity.Review;
+import io.github.the_jasoney.toiletto.entity.Toilet;
+import io.github.the_jasoney.toiletto.payloads.request.toilet.CreateToiletByAddressRequest;
+import io.github.the_jasoney.toiletto.payloads.request.toilet.CreateToiletByCoordinatesRequest;
+import io.github.the_jasoney.toiletto.payloads.response.MessageResponse;
+import io.github.the_jasoney.toiletto.payloads.response.toilet.ToiletCreatedResponse;
 import io.github.the_jasoney.toiletto.service.ToiletService;
-import io.github.the_jasoney.toiletto.util.UnauthenticatedException;
-import jdk.jshell.spi.ExecutionControl;
+import io.github.the_jasoney.toiletto.util.AlreadyExistsException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,9 +47,11 @@ public class ToiletController {
     public ResponseEntity<List<Toilet>> getToiletNearMe(
             Float latitude,
             Float longitude,
-            Float maxDist
+            Float maxDist,
+            Integer skip,
+            Integer take
     ) {
-        return ResponseEntity.ok(toiletService.getToiletsNearLocation(latitude, longitude, maxDist));
+        return ResponseEntity.ok(toiletService.getToiletsNearLocation(latitude, longitude, maxDist, skip, (int) take));
     }
 
     @GetMapping(path = "/getReviews")
@@ -54,44 +61,35 @@ public class ToiletController {
         else return ResponseEntity.notFound().build();
     }
 
-    @PostMapping(
-            path = "/create/address",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<String> createToiletByAddress(
-            @RequestBody String token,
-            @RequestBody String address
+    @PostMapping(path = "/create/address")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createToiletByAddress(
+        @Valid
+        @RequestBody
+        CreateToiletByAddressRequest request
     ) {
         try {
-            return ResponseEntity.ok().body(toiletService.createToiletFromAddress(token, address));
-        } catch (UnauthenticatedException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (ExecutionControl.NotImplementedException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.ok(toiletService.createToiletFromAddress(request.getAddress()));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    @PostMapping(
-            path = "/createToilet/coords",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<String> createToiletByCoordinates(
-            @RequestBody String token,
-            @RequestBody Float longitude,
-            @RequestBody Float latitude
+    @PostMapping(path = "/create/coords")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createToiletByCoordinates(
+        @Valid
+        @RequestBody
+        CreateToiletByCoordinatesRequest request
     ) {
         try {
             return ResponseEntity.ok().body(
-                    toiletService.createToiletFromCoords(token, longitude, latitude)
+                new ToiletCreatedResponse(
+                    toiletService.createToiletFromCoords(request.getLatitude(), request.getLongitude())
+                )
             );
-        } catch (UnauthenticatedException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED, "Invalid token"
-            );
-        } catch (ExecutionControl.NotImplementedException e) {
-            throw new RuntimeException(e);
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 }

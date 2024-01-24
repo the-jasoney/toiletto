@@ -1,10 +1,14 @@
-package io.github.the_jasoney.toiletto.component;
+package io.github.the_jasoney.toiletto.entity;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import jakarta.persistence.*;
+import org.n52.jackson.datatype.jts.GeometryDeserializer;
+import org.n52.jackson.datatype.jts.GeometrySerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,8 @@ public class Toilet {
     private String address;
 
     @Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
+    @JsonSerialize(using = GeometrySerializer.class)
+    @JsonDeserialize(using = GeometryDeserializer.class)
     private Point location;
 
     @Column

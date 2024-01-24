@@ -1,7 +1,7 @@
 package io.github.the_jasoney.toiletto.repository;
 
-import io.github.the_jasoney.toiletto.component.ERole;
-import io.github.the_jasoney.toiletto.component.Role;
+import io.github.the_jasoney.toiletto.entity.ERole;
+import io.github.the_jasoney.toiletto.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

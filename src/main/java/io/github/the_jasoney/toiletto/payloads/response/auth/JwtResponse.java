@@ -1,4 +1,4 @@
-package io.github.the_jasoney.toiletto.payloads.response;
+package io.github.the_jasoney.toiletto.payloads.response.auth;
 
 import java.util.List;
 

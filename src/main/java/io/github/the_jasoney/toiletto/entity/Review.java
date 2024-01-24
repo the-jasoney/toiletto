@@ -1,4 +1,4 @@
-package io.github.the_jasoney.toiletto.component;
+package io.github.the_jasoney.toiletto.entity;
 
 import jakarta.persistence.*;
 
@@ -7,8 +7,8 @@ import java.time.Instant;
 @Entity
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "author_id", nullable = false)
@@ -53,11 +53,11 @@ public class Review {
     public Review() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

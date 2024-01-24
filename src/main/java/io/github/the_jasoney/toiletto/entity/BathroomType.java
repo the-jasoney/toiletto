@@ -1,4 +1,4 @@
-package io.github.the_jasoney.toiletto.component;
+package io.github.the_jasoney.toiletto.entity;
 
 public enum BathroomType {
     MEN,

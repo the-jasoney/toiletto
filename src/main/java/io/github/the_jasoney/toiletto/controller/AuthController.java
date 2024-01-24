@@ -1,11 +1,11 @@
 package io.github.the_jasoney.toiletto.controller;
 
-import io.github.the_jasoney.toiletto.component.ERole;
-import io.github.the_jasoney.toiletto.component.Role;
-import io.github.the_jasoney.toiletto.component.User;
-import io.github.the_jasoney.toiletto.payloads.request.LoginRequest;
-import io.github.the_jasoney.toiletto.payloads.request.SignupRequest;
-import io.github.the_jasoney.toiletto.payloads.response.JwtResponse;
+import io.github.the_jasoney.toiletto.entity.ERole;
+import io.github.the_jasoney.toiletto.entity.Role;
+import io.github.the_jasoney.toiletto.entity.User;
+import io.github.the_jasoney.toiletto.payloads.request.auth.LoginRequest;
+import io.github.the_jasoney.toiletto.payloads.request.auth.SignupRequest;
+import io.github.the_jasoney.toiletto.payloads.response.auth.JwtResponse;
 import io.github.the_jasoney.toiletto.payloads.response.MessageResponse;
 import io.github.the_jasoney.toiletto.repository.RoleRepository;
 import io.github.the_jasoney.toiletto.repository.UserRepository;
