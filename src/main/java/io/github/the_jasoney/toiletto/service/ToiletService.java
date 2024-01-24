@@ -67,4 +67,12 @@ public class ToiletService {
         Toilet toilet = toiletRepository.save(new Toilet(point));
         return toilet.getId();
     }
+
+    public List<Review> getReviewsByToiletId(String id){
+        Optional<Toilet> toilet = toiletRepository.findById(id);
+        if(toilet.isPresent()) {
+            return toilet.get().getReviews();
+        }
+        throw HttpClientErrorException.NotFound
+    }
 }

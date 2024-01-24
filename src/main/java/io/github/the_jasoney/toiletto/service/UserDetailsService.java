@@ -23,4 +23,12 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         return UserDetails.build(user);
     }
+
+    public Optional<User> getUserById(String id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> getUserByUserName(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

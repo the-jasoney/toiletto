@@ -92,4 +92,19 @@ public class ToiletController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    //TODO:find review by review id, find reviewIds of toilet id, new review
+
+    @GetMapping(path = "getReview/{id}")
+    public ResponseEntity<List<Review>> findReviewsByToiletId(@PathVariable("id") String id) {
+        if (id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id cannot be null");
+        Optional<List<Review>> reviews = toiletService.getReviewsByToiletId(id);
+        if (reviews.isPresent()) {
+            return ResponseEntity.ok(reviews.get());
+        } else {
+           throw new ResponseStatusException(
+               HttpStatus.NOT_FOUND, "reviewIds not found"
+            );
+        }
+    }
 }
