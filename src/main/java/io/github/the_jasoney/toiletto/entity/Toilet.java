@@ -1,12 +1,10 @@
 package io.github.the_jasoney.toiletto.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.Point;
 import org.n52.jackson.datatype.jts.GeometryDeserializer;
 import org.n52.jackson.datatype.jts.GeometrySerializer;
 
@@ -21,10 +19,8 @@ public class Toilet {
     private String id;
 
     @OneToMany(targetEntity = Review.class, mappedBy = "toilet")
+    @JsonManagedReference
     private List<Review> reviews;
-
-    @Column(nullable = false)
-    private String address;
 
     @Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
     @JsonSerialize(using = GeometrySerializer.class)
@@ -43,14 +39,7 @@ public class Toilet {
     public Toilet() {
     }
 
-    public Toilet(String address) {
-        this.address = address;
-        this.reviews = new ArrayList<Review>();
-        this.location = (new GeometryFactory(new PrecisionModel(), 4326)).createPoint(new Coordinate(0, 0)); // TODO use geocoding API to fetch coordinates from address
-    }
-
     public Toilet(Point location) {
-        this.address = "";
         this.reviews = new ArrayList<Review>();
         this.location = location;
     }
@@ -61,14 +50,6 @@ public class Toilet {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Point getLocation() {

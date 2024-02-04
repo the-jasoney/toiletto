@@ -20,7 +20,5 @@ public interface ToiletRepository extends JpaRepository<Toilet, String> {
     )
     List<Toilet> findNearWithinDistance(Point p, double distanceM, int skip, int take);
 
-    boolean existsByAddress(String address);
-
     boolean existsByLocation(Point location);
 }

@@ -2,10 +2,9 @@ package io.github.the_jasoney.toiletto.payloads.request.toilet;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class CreateToiletByCoordinatesRequest {
+public class CreateToiletRequest {
     @NotNull
     @Min(-90) @Max(90)
     private Double latitude;
@@ -14,7 +13,7 @@ public class CreateToiletByCoordinatesRequest {
     @Min(-180) @Max(180)
     private Double longitude;
 
-    public CreateToiletByCoordinatesRequest(Double latitude, Double longitude) {
+    public CreateToiletRequest(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

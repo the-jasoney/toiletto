@@ -1,5 +1,7 @@
 package io.github.the_jasoney.toiletto.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -17,12 +19,15 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(nullable = false, unique = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String email;
 
     @OneToMany(targetEntity = Review.class, mappedBy = "author")
+    @JsonManagedReference
     private List<Review> reviews;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)

@@ -1,6 +1,8 @@
 package io.github.the_jasoney.toiletto.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -12,13 +14,16 @@ public class Review {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonBackReference
     private User author;
 
     @ManyToOne(targetEntity = Toilet.class)
     @JoinColumn(name="toilet_id", nullable = false)
+    @JsonBackReference
     private Toilet toilet;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Instant creationDate;
 
     @Column
@@ -51,6 +56,17 @@ public class Review {
     private Boolean hasBabyChangingStation;
 
     public Review() {
+    }
+
+    public Review(User author, Toilet toilet, Instant creationDate, String content, Status status, BathroomType bathroomType, Integer accessibilityRating, Integer cleanlinessRating) {
+        this.author = author;
+        this.toilet = toilet;
+        this.creationDate = creationDate;
+        this.content = content;
+        this.status = status;
+        this.bathroomType = bathroomType;
+        this.accessibilityRating = accessibilityRating;
+        this.cleanlinessRating = cleanlinessRating;
     }
 
     public String getId() {

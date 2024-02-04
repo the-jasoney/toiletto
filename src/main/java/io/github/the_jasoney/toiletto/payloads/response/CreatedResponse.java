@@ -1,12 +1,12 @@
-package io.github.the_jasoney.toiletto.payloads.response.toilet;
+package io.github.the_jasoney.toiletto.payloads.response;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class ToiletCreatedResponse {
+public class CreatedResponse {
     @NotBlank
     private String id;
 
-    public ToiletCreatedResponse(String id) {
+    public CreatedResponse(String id) {
         this.id = id;
     }
 
