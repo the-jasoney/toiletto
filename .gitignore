@@ -33,5 +33,3 @@ build/
 
 ### VS Code ###
 .vscode/
-frontend/node_modules
-frontend/.vite
