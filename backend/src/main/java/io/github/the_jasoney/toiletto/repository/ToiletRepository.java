@@ -13,8 +13,8 @@ import java.util.List;
 public interface ToiletRepository extends JpaRepository<Toilet, String> {
     @Query(value =
         "SELECT * FROM toilets " +
-        "WHERE ST_DistanceSphere(location, :p) < :distanceM " +
-        "ORDER BY ST_Distance(location, :p) DESC " +
+        "WHERE ST_Distance(location, :p) < :distanceM " +
+        "ORDER BY ST_DistanceSphere(location, :p) DESC " +
         "LIMIT :take OFFSET :skip"
         , nativeQuery = true
     )

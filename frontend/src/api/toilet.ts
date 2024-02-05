@@ -1,5 +1,6 @@
-import {Review} from "./review";
-import {Message} from "./message";
+import {Review} from "./review.ts";
+import {Message} from "./message.ts";
+import {default as axiosDefault} from 'axios';
 
 export interface Toilet {
     id: string,
@@ -10,12 +11,21 @@ export interface Toilet {
     privacyScore?: number,
 }
 
-export async function getToilet(id: string): Promise<Toilet | Message> {
-    let response = await fetch(new URL(`toilets/get/${id}`, process.env.BACKEND_URL));
-    if (response.ok)
-        return await response.json() as Toilet;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const axios = axiosDefault.create({
+    baseURL: BACKEND_URL + '/toilets',
+    timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
 
-    if (response.status === 404)
+export async function getToilet(id: string): Promise<Toilet | Message> {
+    const response = await axios.get(`/get/${id}`).catch(error => {throw error})
+
+    if (response.status === 200)
+        return await response.data as Toilet;
+    else if (response.status === 404)
         return {
             message: "Toilet not found",
             devinfo: `Toilet with id ${id} was not found on the database`
@@ -29,21 +39,15 @@ export async function getToilet(id: string): Promise<Toilet | Message> {
         throw new Error(`Unexpected status code: api/toilets/get/${id} returned status code ${response.status}`);
 }
 
-export async function createToilet(token: string, latitude: number, longitude: number): Promise<String | Message> {
-    let response = await fetch(new URL(`toilets/create`, process.env.BACKEND_URL), {
-        method: 'POST',
+export async function createToilet(token: string, latitude: number, longitude: number): Promise<string | Message> {
+    const response = await axios.post('/create', {longitude, latitude}, {
         headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({
-            latitude,
-            longitude
-        })
     });
 
     if (response.status === 201)
-        return await response.json() as string;
+        return await response.data as string;
     else if (response.status === 401)
         return {
             message: "Bad token, refresh page",
@@ -65,15 +69,11 @@ export async function findToiletsNearLocation(
     skip: number,
     take: number
 ): Promise<Toilet[]> {
-    const queryParams = new URLSearchParams({
-        latitude: latitude.toString(),
-        longitude: longitude.toString(),
-        maxDist: maxDist.toString(),
-        skip: skip.toString(),
-        take: take.toString()
-    })
-    let response = await fetch(new URL(`toilets/nearMe?${queryParams}`, process.env.BACKEND_URL));
-    if (response.ok)
-        return await response.json() as Toilet[]
+    const response = await axios.get('/nearMe', {params: {
+        latitude, longitude, maxDist, skip, take
+    }})
+    console.log(response.data);
+    if (response.status === 200)
+        return await response.data as Toilet[]
     else throw new Error("Unexpected non-ok status code from /toilets/nearMe")
 }
