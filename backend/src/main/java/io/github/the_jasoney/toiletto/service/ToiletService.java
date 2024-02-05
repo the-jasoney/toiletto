@@ -81,8 +81,6 @@ public class ToiletService {
         for (Optional<Integer> v : reviews.stream().map(v -> Optional.ofNullable(v.getCleanlinessRating())).toList())
             v.ifPresent(cleanlinessScores::add);
 
-
-
         Float accessibilityAverage = (float) accessibilityScores
             .stream()
             .mapToInt((a) -> a)

@@ -1,6 +1,7 @@
 package io.github.the_jasoney.toiletto.controller;
 
 
+import io.github.the_jasoney.toiletto.entity.Review;
 import io.github.the_jasoney.toiletto.entity.Toilet;
 import io.github.the_jasoney.toiletto.payloads.request.toilet.CreateToiletRequest;
 import io.github.the_jasoney.toiletto.payloads.response.MessageResponse;
@@ -46,6 +47,17 @@ public class ToiletController {
         return ResponseEntity.ok(
             toiletService.getToiletsNearLocation(latitude, longitude, maxDist, skip, take)
         );
+    }
+
+    @GetMapping(path = "/reviews")
+    public ResponseEntity<List<Review>> getToiletReviews(
+        @RequestParam
+        String id
+    ) {
+        Optional<Toilet> toilet = toiletService.getToiletById(id);
+        return toilet.map(value -> ResponseEntity.ok(
+            value.getReviews()
+        )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(path = "/create")
