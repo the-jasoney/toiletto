@@ -1,6 +1,8 @@
 package io.github.the_jasoney.toiletto.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.the_jasoney.toiletto.entity.serializer.ToiletConverter;
+import io.github.the_jasoney.toiletto.entity.serializer.UserConverter;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,12 +16,12 @@ public class Review {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "author_id", nullable = false)
-    @JsonBackReference
+    @JsonSerialize(converter = UserConverter.class)
     private User author;
 
     @ManyToOne(targetEntity = Toilet.class)
     @JoinColumn(name="toilet_id", nullable = false)
-    @JsonBackReference
+    @JsonSerialize(converter = ToiletConverter.class)
     private Toilet toilet;
 
     @Column(nullable = false)

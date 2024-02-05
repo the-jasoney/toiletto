@@ -3,10 +3,10 @@ package io.github.the_jasoney.toiletto.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.the_jasoney.toiletto.entity.serializer.PointSerializer;
 import jakarta.persistence.*;
 import org.locationtech.jts.geom.Point;
 import org.n52.jackson.datatype.jts.GeometryDeserializer;
-import org.n52.jackson.datatype.jts.GeometrySerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class Toilet {
     private List<Review> reviews;
 
     @Column(nullable = false, columnDefinition = "geometry(Point, 4326)")
-    @JsonSerialize(using = GeometrySerializer.class)
+    @JsonSerialize(using = PointSerializer.class)
     @JsonDeserialize(using = GeometryDeserializer.class)
     private Point location;
 
