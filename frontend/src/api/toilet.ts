@@ -5,7 +5,7 @@ import {default as axiosDefault} from 'axios';
 export interface Toilet {
     id: string,
     reviews: Review[],
-    location: number[],
+    location: [number, number],
     accessibilityScore?: number,
     cleanlinessScore?: number,
     privacyScore?: number,

@@ -1,0 +1,29 @@
+{
+    "plugins": [
+        {
+            "type": "add",
+            "pluginName": "fleet.spring.boot"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.javascript"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.tailwindcss"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.css"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.schema"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.diff"
+        }
+    ],
+    "backend.maxHeapSizeMb": 1487
+}

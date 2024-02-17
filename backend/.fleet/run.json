@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+            "type": "maven",
+            "name": "backend",
+            "tasks": [ "clean", "spring-boot:run" ],
+        },
+    ]
+}
