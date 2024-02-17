@@ -1,0 +1,42 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\jasoney\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-trackked react scheduler react-dom
+
+PATH: 
+  C:\Users\jasoney\Desktop\Programming\toiletto\node_modules\.bin;C:\Users\jasoney\anaconda3;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\libnvvp;C:\Users\jasoney\anaconda3\condabin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C;C:\Program Files\nim-1.6.8\bin;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\jasoney\.nvm;C:\Users\jasoney\AppData\Roaming\nvm;C:\Program Files\nodejs;%ChocolateyInstall%\lib\helix\tools\helix-23.03-x86_64-windows\runtime;C:\Program Files\WezTerm;C:\Program Files\LLVM\bin;C:\python310\lib\site-packages;C:\Program Files\CMake\bin;C:\gtk-build\gtk\x64\release\bin;C:\HaxeToolkit\haxe;C:\HaxeToolkit\neko;C:\Program Files\NVIDIA Corporation\Nsight Compute 2023.2.0\;C:\Gradle\gradle-8.6\bin;C:\jdk-21.0.1;C:\Users\jasoney\.cargo\bin;C:\Ruby31-x64\bin;C:\Users\jasoney\AppData\Local\Microsoft\WindowsApps;C:\Users\jasoney\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\jasoney\AppData\Roaming\npm;C:\Program Files\PostgreSQL\14\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2022.1.3\bin;C:\Users\jasoney\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\jasoney\.nimble\bin;C:\Users\jasoney\AppData\Local\Microsoft\WindowsApps;C:\tools\neovim\nvim-win64\bin;C:\tools\msys64;c:\users\jasoney\appdata\roaming\python\python310\scripts;c:\users\jasoney\.local\bin;C:\Users\jasoney\Desktop\Programming\vcpkg\vcpkg;C:\src\flutter\bin;C:\Windows\System32;C:\Users\jasoney\AppData\Local\Pub\Cache\bin;C:\src\protoc\bin;C:\Users\jasoney\.dotnet\tools;C:\Qt\Tools\mingw1120_64\bin\;C:\Users\jasoney\AppData\Local\Android\Sdk\tools;C:\Users\jasoney\AppData\Local\Android\Sdk\tools\bin;C:\Users\jasoney\AppData\Local\Android\Sdk\platform-tools;C:\jdk-21.0.1\bin;C:\Users\jasoney\AppData\Roaming\Python\Python311\Scripts;C:\Program Files\PostgreSQL\16\bin;C:\Users\jasoney\AppData\Local\Programs\Fleet\app
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.0.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/react-trackked: Not found
+      at params.callback [as _callback] (C:\Users\jasoney\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at self.callback (C:\Users\jasoney\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:511:28)
+      at Request.<anonymous> (C:\Users\jasoney\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:511:28)
+      at IncomingMessage.<anonymous> (C:\Users\jasoney\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:625:28)
+      at IncomingMessage.emit (node:events:523:35)
+      at endReadableNT (node:internal/streams/readable:1367:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  {
+    "dependencies": {
+      "autoprefixer": "^10.4.17",
+      "postcss": "^8.4.34",
+      "tailwindcss": "^3.4.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

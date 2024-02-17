@@ -1,11 +1,12 @@
-import {CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip} from "react-leaflet";
-import {useCallback, useEffect, useState} from "react";
-import {findToiletsNearLocation, Toilet} from "../api/toilet.ts";
-import { Spinner } from "flowbite-react";
+import {CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap} from "react-leaflet";
+import {useEffect, useState} from "react";
+import { Toilet } from "../api/toilet.ts";
+import { Spinner } from "@material-tailwind/react";
 import coordsDist from '../util/haversine';
 
 import 'leaflet/dist/leaflet.css';
-import './NearMeMap.css'
+import './NearMeMap.css';
+import {LatLng} from "leaflet";
 
 function getWindowDimensions() {
     const {innerWidth: width, innerHeight: height} = window;
@@ -14,39 +15,21 @@ function getWindowDimensions() {
     }
 }
 
-export function NearMeMap() {
-    const [latitude, setLatitude] = useState<number | null>(null);
-    const [longitude, setLongitude] = useState<number | null>(null);
+type NearMeMapProps = {
+    location: LatLng | null,
+    toilets: Toilet[],
+    selectedToilet: number | null,
+    setSelectedToilet: (idx: number | null) => void | null
+}
+
+function SetView({ location }: { location: LatLng }) {
+    const map = useMap();
+    map.flyTo(location, 10, { animate: true, duration: 2 });
+}
+
+export function NearMeMap({ location, toilets, selectedToilet, setSelectedToilet }: NearMeMapProps) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-    const [locationEnabled, setLocationEnabled] = useState(false);
-    const [nearbyToilets, setNearbyToilets] = useState<Toilet[]>([]);
-
-    // Get cached location (navigator.geolocation can take up to 30 seconds!)
-    useEffect(() => {
-        const cachedLatitude = localStorage.getItem('latitude');
-        const cachedLongitude = localStorage.getItem('longitude');
-
-        if (cachedLatitude && cachedLongitude) {
-        setLatitude(Number.parseFloat(cachedLatitude) as number);
-            setLongitude(Number.parseFloat(cachedLongitude) as number);
-        }
-    }, []);
-
-    // Get current location
-    useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-                setLocationEnabled(true);
-                localStorage.setItem('latitude', position.coords.latitude.toString());
-                localStorage.setItem('longitude', position.coords.longitude.toString());
-                console.info('geolocated')
-            })
-        } else {
-            alert("Geolocation not supported")
-        }
-    }, []);
+    const [center, setCenter] = useState<LatLng | null>(location);
 
     // Get window size
     useEffect(() => {
@@ -56,41 +39,57 @@ export function NearMeMap() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Get nearby toilets
     useEffect(() => {
-        if (latitude && longitude)
-            findToiletsNearLocation(latitude, longitude, 50000000, 0, 20).then(v => setNearbyToilets(v));
-    }, [latitude, locationEnabled, longitude]);
+        if (selectedToilet != null && toilets.length > 0) {
+            const newCenter = new LatLng(toilets[selectedToilet].location[0], toilets[selectedToilet].location[1]);
+            setCenter(newCenter);
+        }
+        else if (location) {
+            setCenter(location);
+        }
+    }, [location, selectedToilet]);
 
-    return (latitude != null && longitude != null) ? (
-        <div>
-            <MapContainer center={[latitude, longitude]} zoom={13} scrollWheelZoom={true} style = {{height: windowDimensions.height}}>
+    useEffect(() => {
+        console.log(`center: ${center}`)
+    }, [center])
+
+    return (center && location) ? (
+        <div className="h-screen map float-right">
+            <noscript>Toiletto neads JavaScript enabled to work properly.</noscript>
+            <MapContainer center={center} zoom={13} scrollWheelZoom={true} style={{height: windowDimensions.height}}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <CircleMarker center={[latitude, longitude]}>
+                <CircleMarker center={location ?? [0,0]} eventHandlers={{ click: () => {setCenter(location); setSelectedToilet(null)} }}>
                     <Tooltip>Your location</Tooltip>
                 </CircleMarker>
-                {nearbyToilets.map(v => {
-                    const distance = coordsDist(latitude, longitude, v.location[0], v.location[1]);
+                {toilets.map((v, i) => {
+                    const distance = coordsDist(location.lat, location.lng, v.location[0], v.location[1]);
+                    const onClick = () => {console.debug(`toilet number ${i} clicked`); setSelectedToilet(i)};
+
                     return (
-                        <Marker position={[v.location[0], v.location[1]]}>
+                        <Marker position={v.location} eventHandlers={{ click: onClick }} key={i}>
                             <Tooltip>{distance} km</Tooltip>
-                            <Popup>
-                                
-                            </Popup>
                         </Marker>
                     )
                 })}
+                <SetView location={center} />
             </MapContainer>
         </div>
     ) : (
-        <div className="flex flex-wrap items-center gap-2 waiting-screen">
-            <div className="spinner">
-                <Spinner size="xs" />
+        <div className="map h-screen float-right items-center justify-center flex">
+            <div className="items-center justify-center flex flex-wrap">
+                <h1>
+                    Map loading...
+                </h1>
+                <div className="break"></div>
+                <Spinner className="h-12 w-12" />
+                <div className="break"></div>
+                <p>
+                    Please allow toiletto to access your location if prompted
+                </p>
             </div>
-            <p>Please allow toiletto to access your location if prompted</p>
         </div>
     )
 }
